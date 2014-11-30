@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=New OnionMail account
+GenericName=OnionMail Wizard
+Exec=/usr/bin/onionmail-wizard
+Icon=/var/lib/onionmail-wizard/onionmail.png
+Categories=GTK;Network;Email;
+Comment=Create a new OnionMail account.
+Terminal=true
+Type=Application
+StartupNotify=true
+X-Info=OnionMail

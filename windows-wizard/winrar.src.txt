@@ -1,0 +1,10 @@
+;The comment below contains SFX script commands
+
+Path=OnionMail-Bundle
+setup=setup.bat
+SetupCode
+Title=OnionMail Bundle 1.0.1 (Beta)
+Shortcut=P, onionmail.bat, OnionMail, OnionMail, "Start OnionMail", onion.ico
+Shortcut=P, "onionmail.bat -w", OnionMail, "Add a new OnionMail Account", "Add Account", onion.ico
+Shortcut=D, onionmail.bat, , OnionMail, OnionMail, onion.ico
+Shortcut=P, doc\wizard.html, OnionMail, Documentation, "Wizard documentation", 
