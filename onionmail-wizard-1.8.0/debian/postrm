@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ ! -f /usr/local/bin/torified-claws-mail ]
+ then
+        rm -f /usr/share/applications/tor-claws-mail.desktop
+ fi
+
+rm -f /usr/share/applications/onionmail-wizard.desktop
+
+
+
+

@@ -1,0 +1,17 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: onionmail-wizard
+Upstream-Contact: OnionMail Project
+Source: https://github.com/onionmail/onionmail.git
+
+Files: *
+Copyright: 1015, OnionMail Project <gestione@onionmail.info>
+License: GPL-2
+
+License: GPL-2
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License, version 2 as published by
+ the Free Software Foundation
+ .        
+ On Debian systems, the complete text of version 2 of the GNU 
+ Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
