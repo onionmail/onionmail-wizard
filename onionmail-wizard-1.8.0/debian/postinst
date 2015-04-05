@@ -1,8 +1,0 @@
-#!/bin/bash
-if [ ! -f /usr/local/bin/torified-claws-mail ] 
-	then
-		cp -f /var/lib/onionmail-wizard/tor-claws-mail.desktop /usr/share/applications
-	fi
-
-
-

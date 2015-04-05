@@ -420,6 +420,16 @@ QBMatrix = [
 	# La matrice e'prodotta in modo da generare le stesse forme se non ci sono
 	# numeri da random.
 
+
+def csh(arg):
+        return '"%s"' % (
+                arg
+                .replace('\\','\\\\')
+                .replace('"','\\"')
+                .replace('$','\\$')
+                .replace('`','\\`')
+        )
+
 def AutoRave(proc):
 	try:
 		os.system("stty -echo")
@@ -519,7 +529,7 @@ def getDesktop():
 	if not os.path.isfile(base):
 		return ""
 
-	cmd="cat "+base+""" | egrep -iEv '\s*\#' | egrep -m 1 -iE '\s*XDG\_DESKTOP\_DIR\s*=\s*\"' | egrep -iEo '\"[^"]+\"' | egrep -iEo '[^"]+'"""
+	cmd="cat "+csh(base)+""" | egrep -iEv '\s*\#' | egrep -m 1 -iE '\s*XDG\_DESKTOP\_DIR\s*=\s*\"' | egrep -iEo '\"[^"]+\"' | egrep -iEo '[^"]+'"""
 	p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 	rs = p.stdout.read()
 	if p.wait()!=0:
@@ -553,7 +563,7 @@ def gnomeIcon(asRoot):
 		d = CONF['dekstop'].replace("%X%",CONF['deskexec'])
 		c.write(d)
 		c.close()
-		os.system("chmod a=r,u=rw \""+pat+"\"")    
+		os.system("chmod a=r,u=rw "+csh(pat))    
 		if CONF['deksreload'] != "":
 			os.system(CONF['deksreload'])    
 		print Col["cyan"]+" Done!!!"+Col["0"]
@@ -563,7 +573,7 @@ def getTORConfig():
 	print Col["purple"]+"Get TOR SocksPort ..."+Col["0"],
 	try:
 		p = subprocess.Popen(
-			"cat "+CONF['torrc']+" | egrep -iEv '^\#' | egrep -iEv '^\s+\#' | egrep -iEo 'SocksPort\s+[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{4,5}' | egrep -iEo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{4,5}' -m 1",
+			"cat "+csh(CONF['torrc'])+" | egrep -iEv '^\#' | egrep -iEv '^\s+\#' | egrep -iEo 'SocksPort\s+[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{4,5}' | egrep -iEo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{4,5}' -m 1",
 			shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 		rs = p.stdout.read()
 		rs = rs.strip()
@@ -595,7 +605,7 @@ def getTORConfig2():
 	print Col["purple"]+"."+Col["0"],
 	try:
 		p = subprocess.Popen(
-			"cat "+CONF['torrc']+" | egrep -iEo 'SocksPort\s+[0-9]{4,5}' | egrep -iEv '\#' | egrep -iEo '[0-9]{4,5}' -m 1",
+			"cat "+csh(CONF['torrc'])+" | egrep -iEo 'SocksPort\s+[0-9]{4,5}' | egrep -iEv '\#' | egrep -iEo '[0-9]{4,5}' -m 1",
 			shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 		rs = p.stdout.read()
 		rs = rs.strip()
@@ -618,7 +628,7 @@ def endProc(retco):
 	global CONF
 	if not CONF['rnd'] == "":
 		if not CONF["tempath"] == CONF["tmp"]:
-			p = subprocess.Popen("rm -R -f "+CONF["tempath"]+" > /dev/null",shell=True)
+			p = subprocess.Popen("rm -R -f "+csh(CONF["tempath"])+" > /dev/null",shell=True)
 			ret = p.wait()
 			if ret!=0:
 				print "Can't delete tmp files!"
@@ -635,10 +645,10 @@ def endProc(retco):
 
 			tmp = CONF['tmp']+"/"+tmp
 			if os.path.isfile(tmp):
-				p = subprocess.Popen("rm -f "+tmp+" > /dev/null",shell=True)
+				p = subprocess.Popen("rm -f "+csh(tmp)+" > /dev/null",shell=True)
 				ret = p.wait()
 				if ret!=0:
-					print "Can't delete: "+tmp
+					print "Can't delete: "+csh(tmp)
 	
 	sys.exit(retco)
 
@@ -703,12 +713,12 @@ def download(out,dest):
 	outasc=out+".asc"
 	destf=dest+"/"+out+".asc"
 	desto=dest+"/"+out
-	cmd=CONF['wget']+" \""+MainServer+outasc+"\" -q -t 2 -U \"onion.py (TAILS)\" -O "+destf
+	cmd=CONF['wget']+" "+csh(MainServer+outasc)+" -q -t 2 -U \"onion.py (TAILS)\" -O "+csh(destf)
 	p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 	if p.wait()!=0:
 		ferro("Can't download from "+MainServer)
 
-	cmd=CONF['gpg']+" --status-fd=2 --no-verbose --batch --quiet --output - --verify "+destf
+	cmd=CONF['gpg']+" --status-fd=2 --no-verbose --batch --quiet --output - --verify "+csh(destf)
 	p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 	rs = p.stdout.read()
 	if p.wait()!=0:
@@ -731,7 +741,7 @@ def download(out,dest):
 		print "\t",Col["red"],"Sign error ", pa, bp, Col["0"]
 		ferro("This file is not signed by "+PGPId)
 	
-	cmd=CONF['gpg']+" --status-fd=2 --no-verbose --quiet --batch --output "+desto+" --decrypt "+destf
+	cmd=CONF['gpg']+" --status-fd=2 --no-verbose --quiet --batch --output "+csh(desto)+" --decrypt "+csh(destf)
 	p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 	if p.wait()!=0:
 		ferro("Can't decrypt "+destf)
@@ -755,12 +765,12 @@ def inittheclaws():
         if os.path.exists(CONF['base'])==False:
 		os.makedirs(CONF['base'])
 
-        p = subprocess.Popen("tar -xzf "+CONF['ctarprofile']+" -C "+CONF['base'] + " > /dev/null", shell=True)
+        p = subprocess.Popen("tar -xzf "+csh(CONF['ctarprofile'])+" -C "+csh(CONF['base']) + " > /dev/null", shell=True)
         ret = p.wait()
         if ret==0:
             if CONF['setusr'] !="" :
-            	os.system("chown "+CONF['setusr']+":"+CONF['setusr']+" -R "+CONF['base'])
-            	os.system("chmod a=-,u=rwx -R "+CONF['base'])
+            	os.system("chown "+CONF['setusr']+":"+CONF['setusr']+" -R "+csh(CONF['base']))
+            	os.system("chmod a=-,u=rwx -R "+csh(CONF['base']))
             print "\t" + Col["blue"]+"Done!!!"+Col["0"]
         else:
             print "\t" + Col["red"]+"Error "+str(ret)+Col["0"]
@@ -790,7 +800,7 @@ def creategpgkey(mail,name,bits,passwd):
     return p.wait()
 
 def addgpguid(curmail,newmail,name,passwd,comment):
-	cmd=CONF['gpg']+" --yes --passphrase-fd 0 --command-fd 0 --batch --edit-key \""+curmail+"\" adduid save"
+	cmd=CONF['gpg']+" --yes --passphrase-fd 0 --command-fd 0 --batch --edit-key "+csh(curmail)+" adduid save"
 	sti=passwd+"\n"+name+"\n"+newmail+"\n"+comment+"\n"
 	p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 	p.stdin.write(sti)
@@ -798,7 +808,6 @@ def addgpguid(curmail,newmail,name,passwd,comment):
 	return rs
     
 def perro(st):
-    "Do an error on stat=0 (this is not a spanish dog!)"
     if stat==0:
         print Col["red"] + st + Col["0"]
         sok.close()
@@ -1008,21 +1017,16 @@ def configuser():
     conf.close()
     
     os.makedirs(USER["inbox"])
-    p = subprocess.Popen("tar -xf "+CONF['ctarmail']+" -C "+USER["inbox"] +" > /dev/null", shell=True)
+    p = subprocess.Popen("tar -xf "+csh(CONF['ctarmail'])+" -C "+csh(USER["inbox"]) +" > /dev/null", shell=True)
     ret = p.wait()
     if ret!=0:
         ferro("Error 1/"+str(ret))
 
     if ret==0:
-    	os.system("rm -f -R "+USER["inbox"]+"/__tagsdb > /dev/null") 
+    	os.system("rm -f -R "+csh(USER["inbox"])+"/__tagsdb > /dev/null") 
     	if CONF['setusr'] !="" :
-    		os.system("chown "+CONF['setusr']+":"+CONF['setusr']+" -R "+USER["inbox"])
+    		os.system("chown "+CONF['setusr']+":"+CONF['setusr']+" -R "+vsh(USER["inbox"]))
     		os.system("chmod a=-,u=rwx -R "+USER["inbox"])
-    #  Roba X! tagsb e' stato rimosso perche' claws-mail se lo fa automaticamente.
-    #tagsdb=CONF['base']+"/tagsdb/#mh/"+USER["mhinbox"]
-    #p = subprocess.Popen("mv -f "+USER["inbox"]+"/__tagsdb "+tagsdb+" > /dev/null",shell=True)
-    #if ret!=0:
-    #    ferro("Error 2/"+str(ret))
 
     folderxml(CONF['base']+"/folderlist.xml",USER["mhinbox"],"OnionMail"+USER["number"]+" "+USER["username"])
 
@@ -1032,7 +1036,7 @@ def configssl(outp, pemcrt):
     fi = open(temp,"w")
     fi.write(pemcrt)
     fi.close()
-    p = subprocess.Popen("openssl x509 -in "+temp+" -inform PEM -out "+temp+".out -outform DER", shell=True)
+    p = subprocess.Popen("openssl x509 -in "+csh(temp)+" -inform PEM -out "+csh(temp)+".out -outform DER", shell=True)
     ret = p.wait()
     os.remove(temp)
     temp=temp+".out"

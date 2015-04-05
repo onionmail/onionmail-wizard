@@ -1,8 +1,0 @@
-ed6cad66b4263c46f9c98d18773bb98c  usr/bin/onionmail-wizard
-9eaad7e015afc64fe04a153f4e951264  usr/share/applications/onionmail-wizard.desktop
-4af50354b35e880c560b1ae1b3719386  usr/share/doc/onionmail-wizard/changelog.Debian.gz
-556add82da8594fbe7725adb064bfbd8  usr/share/doc/onionmail-wizard/copyright
-f2318b07fb0825a378541f484662925e  var/lib/onionmail-wizard/maildir.tar.gz
-dc686757b76dd5e038c40f893e053ce6  var/lib/onionmail-wizard/onionmail.png
-c9abd6d6ebca50b76f55aa3e1ae8aaa1  var/lib/onionmail-wizard/profile.tar.gz
-94e7b4e5bee2070596cd7d0fe2443749  var/lib/onionmail-wizard/tor-claws-mail.desktop

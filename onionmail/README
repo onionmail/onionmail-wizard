@@ -26,12 +26,8 @@ File list:
 
 maildir.tar.gz		Skel file (Empty MailBox)
 onionmail-wizard	Wizard python script.
-onion.py		Link (Old name for dummies)
 profile.tar.gz		Skel file (Empty Claws-Mail profile)
 README			This help
-
-This is the wizard version. You can use our repository:
-http://onionmail.info/repo.html
 
 To get more informations:
 http://onionmail.info

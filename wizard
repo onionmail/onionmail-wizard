@@ -1,0 +1,10 @@
+#!/bin/bash
+gnome-terminal -x onionmail/onionmail-wizard
+
+#
+# If you read this:
+# 	Select the "run in terminal" option
+#	or open this fine by command line:
+#	./wizard
+#
+
