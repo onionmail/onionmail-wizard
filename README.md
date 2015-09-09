@@ -1,5 +1,8 @@
-onionmail-wizard
-================
+onionmail-wizard (Experimental fork)
+=====================================
+
+Warning experimental area:
+Use TAILS-wizard repository instead.
 
  Copyright (C) 2014 by Tramaci.Org & OnionMail.info & mes3hacklab
  This file is a wizard to subscribe and configure onionmail in TAILS
